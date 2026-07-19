@@ -1,0 +1,45 @@
+# ===== Android / Gradle 构建产物 =====
+*.apk
+*.aar
+*.ap_
+*.aab
+*.dex
+*.class
+*.log
+*.iml
+.gradle/
+/local.properties
+/.idea/
+.DS_Store
+/build/
+*/build/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# ===== 密钥库 / 签名文件（含 CI 生成的临时密钥） =====
+*.keystore
+*.jks
+*.p12
+*.pfx
+release.keystore
+keystore.jks
+
+# ===== 本地 SDK 配置（含本机 ANDROID_HOME 路径） =====
+local.properties
+
+# ===== 输出目录（调试/发布 APK 不进版本库） =====
+app/release/
+app/debug/
+
+# ===== 系统 / 编辑器 =====
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.idea/
+*.swp
+*~
+
+# ===== OS X =====
+.AppleDouble
+.LSOverride

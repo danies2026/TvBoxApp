@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">简约影视</string>
+    <string name="nav_search">搜索</string>
+    <string name="nav_settings">设置</string>
+    <string name="row_latest">最近更新</string>
+    <string name="hint_config_url">粘贴 TVBox 配置地址（.json）</string>
+    <string name="btn_load">加载</string>
+    <string name="btn_save">保存并进入</string>
+    <string name="hint_search">输入片名后按确定搜索（可接物理键盘）</string>
+    <string name="status_loading">加载中…</string>
+    <string name="status_ok">配置已加载</string>
+    <string name="status_fail">加载失败，请检查地址</string>
+    <string name="empty_tip">未配置数据源，请先到「设置」填入 TVBox 配置地址</string>
+    <string name="no_episode">暂无可用播放地址</string>
+</resources>
