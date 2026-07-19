@@ -1,1 +1,59 @@
+name: Build APK
 
+on:
+  push:
+    branches: ["main", "master"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build signed release APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install SDK packages & accept licenses
+        run: |
+          yes | sdkmanager --licenses > /dev/null || true
+          sdkmanager "platforms;android-34" "build-tools;34.0.0"
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Build unsigned release APK
+        run: ./gradlew assembleRelease --no-daemon
+
+      - name: Generate signing keystore (CI-only)
+        run: |
+          keytool -genkey -v -keystore release.keystore \
+            -alias tvapp -keyalg RSA -keysize 2048 -validity 10000 \
+            -storepass android -keypass android \
+            -dname "CN=CI, OU=TVApp, O=CI, L=CI, S=CI, C=CN"
+
+      - name: Sign APK with apksigner
+        run: |
+          ANDROID_SDK="${ANDROID_HOME:-$HOME/.android-sdk}"
+          "$ANDROID_SDK/build-tools/34.0.0/apksigner" sign \
+            --ks release.keystore \
+            --ks-key-alias tvapp \
+            --ks-pass pass:android \
+            --key-pass pass:android \
+            --out app/build/outputs/apk/release/app-release.apk \
+            app/build/outputs/apk/release/app-release-unsigned.apk
+
+      - name: Upload signed APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: tvbox-app-release
+          path: app/build/outputs/apk/release/app-release.apk
